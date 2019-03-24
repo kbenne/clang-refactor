@@ -53,7 +53,7 @@ include_directories(${LLVM_INCLUDE_DIRS})
 
 # terminal info
 message(STATUS "TINFO_LIB_DIR: " $ENV{TINFO_LIB_DIR})
-find_library(TINFO_LIB tinfo PATHS $ENV{TINFO_LIB_DIR})
+find_library(TINFO_LIB curses PATHS $ENV{TINFO_LIB_DIR})
 if(${TINFO_LIB-NOTFOUND})
   message(FATAL_ERROR "Could not find tinfo library!")
 else()
