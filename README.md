@@ -1,3 +1,14 @@
+# EnergyPlus Refactor Notes
+
+* Turn on CMAKE_EXPORT_COMPILE_COMMANDS in the EnergyPlus cmake build configuration, this should result in a 
+compile_commands.json at the root of the EnergyPlus build tree
+
+* Compile this project `clang-refactor` using llvm@7 `brew install llvm@7
+
+* Run global-detect
+
+```./build/apps/global-detect -p /Users/kbenne/Development/EnergyPlus/build/ -extra-arg=-I/usr/local/opt/llvm@7/include/c++/ -extra-arg=-I/usr/local/opt/llvm@7/include/c++/v1 -extra-arg=-I/usr/local/opt/llvm@7//lib/clang/7.0.0/include/  /Users/kbenne/Development/EnergyPlus/src/EnergyPlus/*.cc```
+
 # CoARCT
 
 [![Build Status](https://travis-ci.org/lanl/CoARCT.svg?branch=clang-7.0)](https://travis-ci.org/lanl/CoARCT)

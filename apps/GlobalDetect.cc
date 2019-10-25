@@ -125,7 +125,7 @@ main(int argc, const char ** argv)
                  OptionsParser.getSourcePathList());
 
   auto & rep_map = tool.getReplacements();
-  Replacer replacer(std::cout, rep_map);
+  Printer printer(std::cout);
 
   DeclarationMatcher matcher =
     namespaceDecl(
@@ -138,7 +138,7 @@ main(int argc, const char ** argv)
     );
 
   clang::ast_matchers::MatchFinder finder;
-  finder.addMatcher(matcher, &replacer);
+  finder.addMatcher(matcher, &printer);
 
   //tool.run(newFrontendActionFactory(&finder).get());
   tool.runAndSave(newFrontendActionFactory(&finder).get());
