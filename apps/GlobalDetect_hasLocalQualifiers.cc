@@ -44,7 +44,7 @@ public:
       s_ << "'" << var->getNameAsString() << "' declared at ";
       string_t sr(sourceRangeAsString(var->getSourceRange(), &src_manager));
       s_ << sr;
-      s_ << "\n";
+      s_ << std::endl;
     }
     else {
       check_ptr(var,"var","",s_);
@@ -71,49 +71,6 @@ std::string decl2str(clang::VarDecl const *d, clang::SourceManager & sm) {
         sm.getCharacterData(e) - sm.getCharacterData(b));
 }
 
-class Replacer : public clang::ast_matchers::MatchFinder::MatchCallback {
-public:
-  virtual void
-  run(corct::result_t const & result) override
-  {
-    using namespace clang;
-    using namespace corct;
-
-    n_matches_++;
-    VarDecl const * var = result.Nodes.getNodeAs<VarDecl>("gvarName");
-    clang::SourceManager & src_manager(
-        const_cast<clang::SourceManager &>(result.Context->getSourceManager()));
-    if(var) {
-
-      clang::tooling::Replacement rep = replace_source_range(
-          src_manager, var->getSourceRange(), "thread_local " + decl2str(var,src_manager));
-      auto & reps = find_repls(var,src_manager,replacement_map_);
-      if(reps.add(rep)){
-        HERE("add replacement failed");
-      }
-
-      //s_ << "'" << var->getNameAsString() << "' declared at ";
-      //string_t sr(sourceRangeAsString(var->getSourceRange(), &src_manager));
-      //s_ << sr;
-      //s_ << "\n";
-    }
-    else {
-      check_ptr(var,"var","",s_);
-    }
-    return;
-  }  // run
-
-  explicit Replacer(std::ostream & s, replacement_map_t & replacement_map)
-      : s_(s),
-        replacement_map_(replacement_map),
-        n_matches_(0)
-  {}
-
-  std::ostream & s_;
-  replacement_map_t & replacement_map_;
-  uint32_t n_matches_;
-};  // class Global_Printer
-
 int
 main(int argc, const char ** argv)
 {
@@ -124,7 +81,6 @@ main(int argc, const char ** argv)
   RefactoringTool tool(OptionsParser.getCompilations(),
                  OptionsParser.getSourcePathList());
 
-  auto & rep_map = tool.getReplacements();
   Printer printer(std::cout);
 
   DeclarationMatcher matcher =
@@ -132,7 +88,7 @@ main(int argc, const char ** argv)
         hasName("EnergyPlus"),
         forEachDescendant(
           varDecl(
-            hasGlobalStorage()
+            hasType(hasLocalQualifiers())
           ).bind("gvarName")
         )
     );
@@ -140,7 +96,6 @@ main(int argc, const char ** argv)
   clang::ast_matchers::MatchFinder finder;
   finder.addMatcher(matcher, &printer);
 
-  //tool.run(newFrontendActionFactory(&finder).get());
   tool.runAndSave(newFrontendActionFactory(&finder).get());
 
   return 0;

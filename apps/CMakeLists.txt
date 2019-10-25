@@ -38,7 +38,15 @@ add_coarct_exe(func-decl-lister-rav FuncListerRAV.cc )
 
 add_coarct_exe(func-decl-lister-am FuncListerAM.cc )
 
-add_coarct_exe(global-detect GlobalDetect.cc )
+add_coarct_exe(global-detect-hasGlobalStorage GlobalDetect_hasGlobalStorage.cc )
+
+add_coarct_exe(global-detect-hasLocalQualifiers GlobalDetect_hasLocalQualifiers.cc )
+
+add_coarct_exe(global-detect-hasLocalStorage GlobalDetect_hasLocalStorage.cc )
+
+add_coarct_exe(global-detect-hasStaticStorageDuration GlobalDetect_hasStaticStorageDuration.cc )
+
+add_coarct_exe(global-detect-isStaticStorageClass GlobalDetect_isStaticStorageClass.cc )
 
 add_coarct_exe(list-member-calls ListCXXMemberCalls.cc )
 

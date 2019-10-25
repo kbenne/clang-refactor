@@ -1,13 +1,32 @@
 # EnergyPlus Refactor Notes
 
-* Turn on CMAKE_EXPORT_COMPILE_COMMANDS in the EnergyPlus cmake build configuration, this should result in a 
-compile_commands.json at the root of the EnergyPlus build tree
+## clang-refactor setup
 
-* Compile this project `clang-refactor` using llvm@7 `brew install llvm@7
+* Clone ```clang-refactor``` : ```git clone git@github.com:kbenne/clang-refactor.git```
+* Install llvm and clang @ V7: ```brew install llvm@7```
+* Install boost: ```brew install boost```
+* Make build dir: ```mkdir build && cd build```
+* CMake: ```ccmake ..```
+* Set: ```CMAKE_CXX_COMPILER=/usr/local/Cellar/llvm@7/7.1.0/bin/clang++```
+* Set: ```LLVM_DIR=/usr/local/Cellar/llvm@7/7.1.0/lib/cmake/llvm```
+* Set: ```export BOOST_DIR=/usr/local/include```
+* Build project: ```make -j 4```
 
-* Run global-detect
+
+## EnergyPlus setup
+
+* Turn on ```CMAKE_EXPORT_COMPILE_COMMANDS``` in the EnergyPlus cmake build configuration, this should result in a
+```compile_commands.json``` at the root of the EnergyPlus build tree.
+
+## Run global-detect
+
+### Example 1
 
 ```./build/apps/global-detect -p /Users/kbenne/Development/EnergyPlus/build/ -extra-arg=-I/usr/local/opt/llvm@7/include/c++/ -extra-arg=-I/usr/local/opt/llvm@7/include/c++/v1 -extra-arg=-I/usr/local/opt/llvm@7//lib/clang/7.0.0/include/  /Users/kbenne/Development/EnergyPlus/src/EnergyPlus/*.cc```
+
+### Example 2
+
+```./build/apps/global-detect -p /Users/mmitchel/Projects/EnergyPlus/dev/develop/cmake-build-debug -extra-arg=-I/usr/local/opt/llvm@7/include/c++/ -extra-arg=-I/usr/local/opt/llvm@7/include/c++/v1 -extra-arg=-I/usr/local/opt/llvm@7//lib/clang/7.0.0/include/ -extra-arg=-I/usr/local/opt/llvm@7/lib/clang/7.1.0/include /Users/mmitchel/Projects/EnergyPlus/dev/develop/src/EnergyPlus/*.cc```
 
 # CoARCT
 

@@ -32,3 +32,6 @@ tools/data-use/score/dist
 *.exe
 *.out
 *.app
+
+/output
+*/.DS_Store
