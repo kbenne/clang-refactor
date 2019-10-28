@@ -34,4 +34,4 @@ tools/data-use/score/dist
 *.app
 
 /output
-*/.DS_Store
+*.DS_Store

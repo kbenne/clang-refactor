@@ -41,7 +41,7 @@ public:
     clang::SourceManager & src_manager(
         const_cast<clang::SourceManager &>(result.Context->getSourceManager()));
     if(var) {
-      s_ << "'" << var->getNameAsString() << "' declared at ";
+      s_ << "'" << var->getQualifiedNameAsString() << "' declared at ";
       string_t sr(sourceRangeAsString(var->getSourceRange(), &src_manager));
       s_ << sr;
       s_ << std::endl;
